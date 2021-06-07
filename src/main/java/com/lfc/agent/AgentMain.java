@@ -21,7 +21,13 @@ public class AgentMain {
         pool.appendSystemPath();
         try {
             // 改造的类
-            CtClass ctClass = pool.get("com.mysql.cj.jdbc.ClientPreparedStatement");
+            CtClass ctClass = null;
+            try {
+                ctClass = pool.get("com.mysql.cj.jdbc.ClientPreparedStatement");
+            } catch (NotFoundException e) {
+                ctClass = pool.get("com.mysql.cj.jdbc.PreparedStatement");
+            }
+            //CtClass ctClass = pool.get("com.mysql.cj.jdbc.PreparedStatement");
             // 需要改造的方法
             Map<String,String> methods = new HashMap<>(3);
             methods.put("executeQuery", "java.sql.ResultSet");
@@ -37,7 +43,7 @@ public class AgentMain {
                 executeQueryNew.setBody("{            " +
                         "            long begin = System.currentTimeMillis();\n" +
                         "             System.out.println(\"\033[93m[\033[34m"+java.time.LocalDate.now()+" "+java.time.LocalTime.now()+"\033[0m\033[93m]---------------------------------------\033[0m\");\n"+
-                        "            System.out.println(\"\033[30m\"+asSql()+\"\033[0m\");\n" +
+                        "            System.out.println(\"\033[35m\"+asSql()+\"\033[0m\");\n" +
                         "            "+s+" execResults = "+newMethodName+"();\n" +
                         "            System.out.println(\"\033[93m[\033[0m\"+\"\033[34m\"+(System.currentTimeMillis()-begin)+\"ms\033[0m\"+\"\033[93m]----------------------------------------------------------\033[0m\");"+
                         "            return ($r)execResults;" +
