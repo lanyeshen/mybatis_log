@@ -42,8 +42,10 @@ public class AgentMain {
                 executeQuery.setName(newMethodName);
                 executeQueryNew.setBody("{            " +
                         "            long begin = System.currentTimeMillis();\n" +
-                        "             System.out.println(\"\033[93m[\033[34m"+java.time.LocalDate.now()+" "+java.time.LocalTime.now()+"\033[0m\033[93m]---------------------------------------\033[0m\");\n"+
-                        "            System.out.println(\"\033[35m\"+asSql()+\"\033[0m\");\n" +
+                        "            java.time.LocalDate date = java.time.LocalDate.now();\n"+
+                        "            java.time.LocalTime time = java.time.LocalTime.now();\n"+
+                        "            System.out.println(\"\033[93m[\033[34m\"+date.toString() +\" \"+ time.toString()+\"\033[0m\033[93m]---------------------------------------\033[0m\");\n"+
+                        "            System.out.println(\"\033[32m\"+asSql()+\"\033[0m\");\n" +
                         "            "+s+" execResults = "+newMethodName+"();\n" +
                         "            System.out.println(\"\033[93m[\033[0m\"+\"\033[34m\"+(System.currentTimeMillis()-begin)+\"ms\033[0m\"+\"\033[93m]----------------------------------------------------------\033[0m\");"+
                         "            return ($r)execResults;" +
@@ -52,6 +54,7 @@ public class AgentMain {
             }
 
             ctClass.toClass();
+            System.out.println(">>>>>>MybatisLog初始化成功>>>>>>>>>>");
         } catch (NotFoundException e) {
             System.err.println("没有找到这个类");
             e.printStackTrace();
