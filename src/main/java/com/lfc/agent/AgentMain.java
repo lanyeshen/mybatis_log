@@ -25,9 +25,12 @@ public class AgentMain {
             try {
                 ctClass = pool.get("com.mysql.cj.jdbc.ClientPreparedStatement");
             } catch (NotFoundException e) {
-                ctClass = pool.get("com.mysql.cj.jdbc.PreparedStatement");
+                try {
+                    ctClass = pool.get("com.mysql.cj.jdbc.PreparedStatement");
+                } catch (NotFoundException notFoundException) {
+                    ctClass = pool.get("com.mysql.jdbc.PreparedStatement");
+                }
             }
-            //CtClass ctClass = pool.get("com.mysql.cj.jdbc.PreparedStatement");
             // 需要改造的方法
             Map<String,String> methods = new HashMap<>(3);
             methods.put("executeQuery", "java.sql.ResultSet");
@@ -54,10 +57,9 @@ public class AgentMain {
             }
 
             ctClass.toClass();
-            System.out.println(">>>>>>MybatisLog初始化成功>>>>>>>>>>");
+            System.out.println(">>>>>>MybatisLog初始化成功<<<<<<<");
         } catch (NotFoundException e) {
-            System.err.println("没有找到这个类");
-            e.printStackTrace();
+            System.err.println("<<<<<<MybatisLog初始化失败>>>>>>>");
         } catch (CannotCompileException e) {
             e.printStackTrace();
         }
