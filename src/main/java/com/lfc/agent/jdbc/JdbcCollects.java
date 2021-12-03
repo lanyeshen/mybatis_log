@@ -30,10 +30,10 @@ public class JdbcCollects {
 
     public static  void end(SqlInfo info) {
         String sql = info.sql;
-        String[] split = sql.split("PreparedStatement: ");
+        String[] split = sql.split(": ");
         info.sql = split[split.length-1];
         info.useTime = System.currentTimeMillis() - info.begin;
-        System.out.println("\033[93m[\033[34m" + info.date.toString() + info.time.toString() + "\033[0m" + "\033[93m" + "---------------------------------------\033[0m");
+        System.out.println("\033[93m[\033[34m" + info.date.toString() + " " + info.time.toString() + "\033[0m" + "\033[93m" + "---------------------------------------\033[0m");
         System.out.println("\033[32m" + info.sql + "\033[0m");
         System.out.println("\033[93m[\033[0m"+"\033[34m"+(info.useTime)+"ms\033[0m"+"\033[93m]----------------------------------------------------------\033[0m");
     }
